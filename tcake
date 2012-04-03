@@ -1,0 +1,43 @@
+#!/bin/sh
+#ibnu yahya (c) 2012
+#forking project cordova
+if [ $1 = "create" ]
+then
+PKG=$2
+NAME=$3
+PKGDIR=`echo ${NAME} | sed 's/\./\//g'`
+PATH=$4
+DEST="${PATH}/${PKG}"
+	if [ -d ${PATH} ]
+	then
+		/bin/cp -rf android/ ${DEST}
+		/usr/bin/install -d -m 755 ${DEST}/src/${PKGDIR}
+		/bin/mv ${DEST}/src/app.java ${DEST}/src/${PKGDIR}/app.java
+		/bin/cat ${DEST}/src/${PKGDIR}/app.java | /usr/bin/sed s/org.tcake.android/${NAME}/g > ${DEST}/src/${PKGDIR}/app.java.src
+		/bin/mv ${DEST}/src/${PKGDIR}/app.java.src ${DEST}/src/${PKGDIR}/app.java
+		/usr/bin/install -d -m 755 ${DEST}/gen/${PKGDIR}
+		/bin/mv ${DEST}/gen/BuildConfig.java ${DEST}/gen/${PKGDIR}/BuildConfig.java
+		
+		/bin/cat ${DEST}/gen/${PKGDIR}/BuildConfig.java | /usr/bin/sed s/org.tcake.android/${NAME}/g > ${DEST}/gen/${PKGDIR}/BuildConfig.java.src
+		/bin/mv ${DEST}/gen/${PKGDIR}/BuildConfig.java.src ${DEST}/gen/${PKGDIR}/BuildConfig.java
+		
+		/bin/mv ${DEST}/gen/R.java ${DEST}/gen/${PKGDIR}/R.java
+		
+		/bin/cat ${DEST}/gen/${PKGDIR}/R.java | /usr/bin/sed s/org.tcake.android/${NAME}/g > ${DEST}/gen/${PKGDIR}/R.java.src
+		/bin/mv ${DEST}/gen/${PKGDIR}/R.java.src ${DEST}/gen/${PKGDIR}/R.java
+		
+		/bin/cat ${DEST}/AndroidManifest.xml | /usr/bin/sed s/org.tcake.android/${NAME}/g > ${DEST}/AndroidManifest.xml.src
+		/bin/mv ${DEST}/AndroidManifest.xml.src ${DEST}/AndroidManifest.xml
+		
+		/bin/cat ${DEST}/res/values/strings.xml | /usr/bin/sed s/tcake/${PKG}/g > ${DEST}/res/values/strings.xml.src
+		/bin/mv ${DEST}/res/values/strings.xml.src ${DEST}/res/values/strings.xml
+		
+	else
+		echo "Path Not Exist"
+	fi
+elif [ $1 = "help" ]
+then
+echo "command : ./tcake create [project name] [package name] [path]"
+else
+echo "command : ./tcake create [project name] [package name] [path]"
+fi
