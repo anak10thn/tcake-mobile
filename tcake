@@ -11,6 +11,8 @@ DEST="${PATH}/${PKG}"
 	if [ -d ${PATH} ]
 	then
 		/bin/cp -rf android/ ${DEST}
+		/bin/cat ${DEST}/.project | /usr/bin/sed s/tcake/${PKG}/g > ${DEST}/.project.src
+		/bin/mv ${DEST}/.project.src ${DEST}/.project
 		/usr/bin/install -d -m 755 ${DEST}/src/${PKGDIR}
 		/bin/mv ${DEST}/src/app.java ${DEST}/src/${PKGDIR}/app.java
 		/bin/cat ${DEST}/src/${PKGDIR}/app.java | /usr/bin/sed s/org.tcake.android/${NAME}/g > ${DEST}/src/${PKGDIR}/app.java.src
